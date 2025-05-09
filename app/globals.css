@@ -116,7 +116,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.hero-container {
+  @apply flex flex-col lg:flex-row justify-start lg:justify-between items-center px-4 sm:px-8 lg:px-20 gap-10 lg:gap-4 min-h-screen h-auto my-20 lg:my-0 max-w-[1280px] mx-auto;
 }
