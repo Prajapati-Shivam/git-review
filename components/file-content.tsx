@@ -86,13 +86,13 @@ export function FileContent({
         <CardHeader>
           <div className='flex items-center justify-between'>
             <CardTitle>🗂️ File Content</CardTitle>
-            {/* {selectedFile && (
+            {selectedFile && (
               <ReviewButton
                 selectedFile={selectedFile}
                 fileContent={fileContent}
                 setReview={setReview}
               />
-            )} */}
+            )}
           </div>
         </CardHeader>
         <CardContent className='flex-1'>
