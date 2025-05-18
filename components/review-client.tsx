@@ -83,7 +83,7 @@ export const ReviewClient: React.FC<ReviewClientProps> = ({
   return (
     <div>
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-4'>
-        <Card className='border-2 border-black'>
+        <Card className='border-2'>
           <CardHeader>
             <CardTitle>ᛋ Project Files</CardTitle>
             <CardDescription>

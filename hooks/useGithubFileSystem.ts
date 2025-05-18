@@ -3,6 +3,8 @@ export async function fetchFolderContents(
   repo: string,
   path = ''
 ) {
+  const excludedExtensions = ['.svg', '.jpg', '.jpeg', '.png', '.ico', '.webp'];
+
   try {
     const url = path
       ? `https://api.github.com/repos/${owner}/${repo}/contents/${path}`
@@ -16,7 +18,13 @@ export async function fetchFolderContents(
 
     if (!res.ok) throw new Error(`GitHub error: ${res.statusText}`);
 
-    return await res.json();
+    const files = await res.json();
+
+    return files.filter((file: any) => {
+      if (file.type === 'dir') return true; // Always include folders
+      const lowerName = file.name.toLowerCase();
+      return !excludedExtensions.some((ext) => lowerName.endsWith(ext));
+    });
   } catch (err) {
     console.error(err);
     return [];

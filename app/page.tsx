@@ -3,8 +3,11 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@clerk/nextjs';
+
 export default function Home() {
   const navigate = useRouter();
+  const { isSignedIn } = useUser();
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget as HTMLFormElement);
@@ -20,6 +23,11 @@ export default function Home() {
       return;
     }
 
+    if (!isSignedIn) {
+      alert('Please log in to start a code review.');
+      return;
+    }
+
     const repoName = url.split('github.com/')[1]; // owner/repo
     const [owner, repo] = repoName.split('/');
 
@@ -28,7 +36,7 @@ export default function Home() {
 
   return (
     <main className='hero-container'>
-      <div className='flex flex-col items-center sm:justify-center h-screen w-full gap-8'>
+      <div className='flex flex-col items-center sm:justify-center h-[calc(100vh-5rem)] w-full gap-8'>
         <h1 className='text-5xl sm:text-7xl font-bold'>Code Review AI Agent</h1>
 
         <form

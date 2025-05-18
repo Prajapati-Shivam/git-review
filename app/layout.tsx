@@ -1,7 +1,9 @@
-import type { Metadata } from 'next';
+import { type Metadata } from 'next';
+
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import { ConvexClientProvider } from './ConvexClientProvider';
+import { ClerkProvider } from '@clerk/nextjs';
+import { Navbar } from '@/components/Navbar';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -14,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Github Review AI Agent',
+  title: 'Github Review',
   description: 'A code review AI agent for GitHub repositories',
 };
 
@@ -24,12 +26,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ConvexClientProvider>{children}</ConvexClientProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang='en'>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Navbar />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

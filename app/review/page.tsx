@@ -1,5 +1,7 @@
 import { ReviewClient } from '@/components/review-client';
-
+import { auth } from '@clerk/nextjs/server';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 export default async function Page({
   searchParams,
 }: {
@@ -7,16 +9,24 @@ export default async function Page({
 }) {
   const params = await searchParams;
   const { path = '', owner = 'vercel', repo = 'next.js' } = params || {};
+  const { userId } = await auth();
 
+  if (!userId) {
+    redirect('/');
+  }
   return (
     <div className='hero-container py-10'>
       <div className='flex flex-col gap-4'>
-        <header>
-          <h2 className='text-3xl font-bold'>Github Review</h2>
-        </header>
         <div>
           <h3 className='text-2xl font-semibold mb-2'>
-            Code Review for {owner}/{repo}
+            Code Review for{' '}
+            <Link
+              href={`https://github.com/${owner}/${repo}`}
+              target='_blank'
+              className='hover:underline'
+            >
+              {owner}/{repo}
+            </Link>
           </h3>
           <p className='text-gray-700'>
             Hey! Your helper for examining code in GitHub repositories is me,
