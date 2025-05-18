@@ -81,9 +81,9 @@ export const ReviewClient: React.FC<ReviewClientProps> = ({
   };
 
   return (
-    <div>
+    <div className='h-[650px]'>
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-4'>
-        <Card className='border-2'>
+        <Card className='border-2 h-max'>
           <CardHeader>
             <CardTitle>ᛋ Project Files</CardTitle>
             <CardDescription>

@@ -16,7 +16,7 @@ export const Navbar = () => {
       <div className='container mx-auto py-4 flex items-center justify-between'>
         {/* Logo / Brand */}
         <Link href='/' className='flex items-center space-x-2'>
-          <h2 className='text-3xl font-bold'>Github Review</h2>
+          <span className='text-3xl font-bold'>Github Review</span>
         </Link>
 
         {/* Navigation / Auth */}

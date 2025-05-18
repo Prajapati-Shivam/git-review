@@ -96,7 +96,7 @@ export function FileContent({
           </div>
         </CardHeader>
         <CardContent className='flex-1'>
-          <ScrollArea className=''>
+          <ScrollArea className='h-[500px]'>
             {selectedFile ? (
               <div className='relative h-full'>
                 <div className='rounded-md overflow-hidden h-full'>
