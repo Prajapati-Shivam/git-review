@@ -12,8 +12,8 @@ import Link from 'next/link';
 
 export const Navbar = () => {
   return (
-    <header className='bg-white shadow-sm sticky top-0 z-50'>
-      <div className='container mx-auto py-4 flex items-center justify-between'>
+    <header className='bg-white shadow-sm sticky top-0 z-50 px-10 lg:px-28'>
+      <div className='mx-auto py-4 flex items-center justify-between'>
         {/* Logo / Brand */}
         <Link href='/' className='flex items-center space-x-2'>
           <span className='text-3xl font-bold'>Github Review</span>

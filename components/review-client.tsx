@@ -85,7 +85,7 @@ export const ReviewClient: React.FC<ReviewClientProps> = ({
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-4'>
         <Card className='border-2 h-max'>
           <CardHeader>
-            <CardTitle>ᛋ Project Files</CardTitle>
+            <CardTitle className='text-xl'>ᛋ Project Files</CardTitle>
             <CardDescription>
               Click a file to review or expand folders.
             </CardDescription>

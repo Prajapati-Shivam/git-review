@@ -4,9 +4,9 @@ import { ScrollArea } from './ui/scroll-area';
 
 export function CodeReview({ review }: { review: string }) {
   return (
-    <Card className='border-2'>
+    <Card className='border-2 lg:col-span-4'>
       <CardHeader>
-        <CardTitle>🤖 Code Review</CardTitle>
+        <CardTitle className='text-xl'>🤖 Code Review</CardTitle>
       </CardHeader>
       <CardContent className='flex-1'>
         <ScrollArea className='h-[500px]'>

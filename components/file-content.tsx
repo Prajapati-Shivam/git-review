@@ -1,3 +1,5 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
@@ -8,6 +10,8 @@ import {
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { ReviewButton } from './review-button';
+import { Progress } from '@/components/ui/progress';
+import { useEffect, useState } from 'react';
 
 interface FileContentProps {
   selectedFile: string;
@@ -32,7 +36,53 @@ export function FileContent({
   selectedLine,
   onCloseDialog,
 }: FileContentProps) {
-  console.log(lineComments);
+  const [reviewLen, setReviewLen] = useState(0);
+
+  const MAX_REVIEWS_PER_DAY = 5;
+  const STORAGE_KEY = 'codeReviewTracker';
+
+  useEffect(() => {
+    const data = localStorage.getItem(STORAGE_KEY);
+    const now = new Date();
+
+    if (data) {
+      const parsed = JSON.parse(data);
+      const lastReset = new Date(parsed.lastReset);
+
+      const isSameDay =
+        lastReset.getFullYear() === now.getFullYear() &&
+        lastReset.getMonth() === now.getMonth() &&
+        lastReset.getDate() === now.getDate();
+
+      if (isSameDay) {
+        setReviewLen(parsed.count);
+      } else {
+        // Reset for a new day
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ count: 0, lastReset: now.toISOString() })
+        );
+        setReviewLen(0);
+      }
+    } else {
+      // First time setup
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ count: 0, lastReset: now.toISOString() })
+      );
+    }
+  }, []);
+
+  const incrementReviewCount = () => {
+    const now = new Date();
+    const newCount = reviewLen + 1;
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ count: newCount, lastReset: now.toISOString() })
+    );
+    setReviewLen(newCount);
+  };
+
   const getLanguageFromFileName = (fileName: string) => {
     const extension = fileName.split('.').pop()?.toLowerCase();
     switch (extension) {
@@ -58,7 +108,6 @@ export function FileContent({
   const lineProps = (lineNumber: number) => {
     const isHighlighted = highlightedLines.includes(lineNumber);
     const comment = lineComments[lineNumber];
-    console.log('Line number:', lineNumber, 'Comment:', comment);
 
     return {
       style: {
@@ -73,7 +122,6 @@ export function FileContent({
       },
       onClick: (e: React.MouseEvent) => {
         if (isHighlighted && comment) {
-          console.log('Clicking line:', lineNumber, 'Comment:', comment);
           onLineClick(lineNumber, e);
         }
       },
@@ -82,16 +130,27 @@ export function FileContent({
 
   return (
     <>
-      <Card className='border-2 lg:col-span-2'>
+      <Card className='border-2 lg:col-span-3'>
         <CardHeader>
           <div className='flex items-center justify-between'>
-            <CardTitle>🗂️ File Content</CardTitle>
+            <CardTitle className='text-xl'>🗂️ File Content</CardTitle>
             {selectedFile && (
-              <ReviewButton
-                selectedFile={selectedFile}
-                fileContent={fileContent}
-                setReview={setReview}
-              />
+              <div className='flex items-center gap-4'>
+                <div>
+                  <Progress value={(reviewLen / MAX_REVIEWS_PER_DAY) * 100} />
+                  <p className='mt-1 text-gray-600 text-sm'>
+                    <strong>{reviewLen}</strong> out of{' '}
+                    <strong>{MAX_REVIEWS_PER_DAY}</strong> reviews used today
+                  </p>
+                </div>
+                <ReviewButton
+                  selectedFile={selectedFile}
+                  fileContent={fileContent}
+                  setReview={setReview}
+                  isDisabled={reviewLen >= MAX_REVIEWS_PER_DAY}
+                  onReviewComplete={incrementReviewCount}
+                />
+              </div>
             )}
           </div>
         </CardHeader>
@@ -133,16 +192,8 @@ export function FileContent({
           </DialogHeader>
           <div className='prose dark:prose-invert max-w-none text-sm'>
             <span className='whitespace-pre-wrap'>
-              {selectedLine
-                ? (() => {
-                    console.log('Dialog - Selected Line:', selectedLine);
-                    console.log('Dialog - Line Comments:', lineComments);
-                    console.log(
-                      'Dialog - Comment for selected line:',
-                      lineComments[selectedLine]
-                    );
-                    return lineComments[selectedLine];
-                  })()
+              {selectedLine && lineComments[selectedLine]
+                ? lineComments[selectedLine]
                 : ''}
             </span>
           </div>
