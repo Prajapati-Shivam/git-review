@@ -4,7 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
-
+import { AuroraBackground } from '@/components/ui/aurora-background';
+import { motion } from 'motion/react';
+import WorkingCard from '@/components/WorkingCard';
+import Footer from '@/components/Footer';
 export default function Home() {
   const navigate = useRouter();
   const { isSignedIn } = useUser();
@@ -35,27 +38,62 @@ export default function Home() {
   };
 
   return (
-    <main className='hero-container'>
-      <div className='flex flex-col items-center sm:justify-center h-[calc(100vh-5rem)] w-full gap-8'>
-        <h1 className='text-5xl sm:text-7xl font-bold'>Code Review AI Agent</h1>
-
-        <form
-          onSubmit={handleSubmit}
-          className='flex flex-col items-center gap-4'
+    <>
+      <AuroraBackground>
+        <motion.div
+          initial={{ opacity: 0.0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.3,
+            duration: 0.8,
+            ease: 'easeInOut',
+          }}
+          className='relative flex flex-col gap-4 items-center justify-center'
         >
-          <div className='flex flex-col sm:flex-row gap-8 items-center'>
-            <Input
-              placeholder='Enter public GitHub repo URL'
-              id='url'
-              name='url'
-              className='w-auto sm:w-80'
-            />
-            <Button type='submit' size='lg' className='ml-2'>
-              Get Started
-            </Button>
-          </div>
-        </form>
-      </div>
-    </main>
+          <main className='hero-container'>
+            <div className='flex flex-col items-center sm:justify-center h-[calc(100vh-10rem)] w-full gap-4 sm:gap-8'>
+              <div className='text-3xl md:text-7xl font-bold dark:text-white text-center'>
+                Code Review AI Agent
+              </div>
+              <div className='font-extralight text-base text-center md:text-2xl dark:text-neutral-200 py-4'>
+                Get started with code reviews in seconds. <br />
+                Just enter your GitHub repository URL and let the AI do the
+                rest.
+              </div>
+              <form
+                onSubmit={handleSubmit}
+                className='flex flex-col items-center gap-4 w-full'
+              >
+                <div className='relative w-full max-w-xl'>
+                  <Input
+                    placeholder='Enter public GitHub repo URL'
+                    id='url'
+                    name='url'
+                    type='url'
+                    required
+                    className='w-full pr-36 py-7 border text-base md:text-xl border-black outline-none focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:text-white dark:border-neutral-600 dark:focus:ring-blue-500'
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.8)',
+                      backdropFilter: 'blur(20px)',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+                    }}
+                  />
+                  <Button
+                    type='submit'
+                    size='lg'
+                    className='absolute right-3 top-1/2 -translate-y-1/2 px-4 py-2'
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </main>
+        </motion.div>
+      </AuroraBackground>
+      <WorkingCard />
+      <Footer />
+    </>
   );
 }
