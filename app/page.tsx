@@ -8,33 +8,40 @@ import { AuroraBackground } from '@/components/ui/aurora-background';
 import { motion } from 'motion/react';
 import WorkingCard from '@/components/WorkingCard';
 import Footer from '@/components/Footer';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useRouter();
   const { isSignedIn } = useUser();
   const handleSubmit = (event: React.FormEvent) => {
+    setIsLoading(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget as HTMLFormElement);
     const url = formData.get('url') as string;
     if (!url) {
       alert('Please enter a valid URL');
+      setIsLoading(false);
       return;
     }
 
     const urlPattern = /^(https?:\/\/)?(www\.)?github\.com\/[^\/]+\/[^\/]+$/;
     if (!urlPattern.test(url)) {
       alert('Please enter a valid GitHub repository URL');
+      setIsLoading(false);
       return;
     }
 
     if (!isSignedIn) {
       alert('Please log in to start a code review.');
+      setIsLoading(false);
       return;
     }
 
     const repoName = url.split('github.com/')[1]; // owner/repo
     const [owner, repo] = repoName.split('/');
-
     navigate.push(`/review?owner=${owner}&repo=${repo}`);
+    setIsLoading(false);
   };
 
   return (
@@ -69,8 +76,6 @@ export default function Home() {
                     placeholder='Enter public GitHub repo URL'
                     id='url'
                     name='url'
-                    type='url'
-                    required
                     className='w-full pr-36 py-7 border text-base md:text-xl border-black outline-none focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:text-white dark:border-neutral-600 dark:focus:ring-blue-500'
                     style={{
                       background: 'rgba(255, 255, 255, 0.8)',
@@ -82,9 +87,16 @@ export default function Home() {
                   <Button
                     type='submit'
                     size='lg'
-                    className='absolute right-3 top-1/2 -translate-y-1/2 px-4 py-2'
+                    className='absolute right-3 top-1/2 -translate-y-1/2 px-4 py-2 cursor-pointer'
                   >
-                    Get Started
+                    {isLoading ? (
+                      <>
+                        <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                        Loading...
+                      </>
+                    ) : (
+                      'Get Started'
+                    )}
                   </Button>
                 </div>
               </form>

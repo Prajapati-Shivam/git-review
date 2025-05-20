@@ -130,7 +130,7 @@ export function FileContent({
 
   return (
     <>
-      <Card className='border-2 lg:col-span-3'>
+      <Card className='border-2 hover:border-neutral-400 lg:col-span-3'>
         <CardHeader>
           <div className='flex items-center justify-between'>
             <CardTitle className='text-xl'>🗂️ File Content</CardTitle>
