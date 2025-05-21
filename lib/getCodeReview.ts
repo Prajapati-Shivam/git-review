@@ -43,8 +43,8 @@ export default async function getCodeReview(code: string): Promise<string> {
 
     const result = data.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
     return result;
-  } catch (error: any) {
-    console.error('Error generating code review:', error.message || error);
+  } catch (error) {
+    console.error('Error generating code review:', error);
     return 'Sorry, we could not generate a code review at this moment. Please try again later.';
   }
 }

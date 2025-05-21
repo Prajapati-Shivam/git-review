@@ -10,6 +10,7 @@ import WorkingCard from '@/components/WorkingCard';
 import Footer from '@/components/Footer';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useRouter();
@@ -20,28 +21,30 @@ export default function Home() {
     const formData = new FormData(event.currentTarget as HTMLFormElement);
     const url = formData.get('url') as string;
     if (!url) {
-      alert('Please enter a valid URL');
+      toast.error('Please enter a GitHub repository URL');
       setIsLoading(false);
       return;
     }
 
     const urlPattern = /^(https?:\/\/)?(www\.)?github\.com\/[^\/]+\/[^\/]+$/;
-    if (!urlPattern.test(url)) {
-      alert('Please enter a valid GitHub repository URL');
+    if (!urlPattern.test(url.replace(/\/$/, ''))) {
+      // Remove trailing slash for validation
+      toast.error('Please enter a valid GitHub repository URL');
       setIsLoading(false);
       return;
     }
 
     if (!isSignedIn) {
-      alert('Please log in to start a code review.');
+      toast.error('Please sign in to continue');
       setIsLoading(false);
       return;
     }
 
-    const repoName = url.split('github.com/')[1]; // owner/repo
+    const repoName = url.replace(/\/$/, '').split('github.com/')[1];
     const [owner, repo] = repoName.split('/');
-    navigate.push(`/review?owner=${owner}&repo=${repo}`);
-    setIsLoading(false);
+    setTimeout(() => {
+      navigate.push(`/review?owner=${owner}&repo=${repo}`);
+    }, 100);
   };
 
   return (
@@ -59,7 +62,7 @@ export default function Home() {
         >
           <main className='hero-container'>
             <div className='flex flex-col items-center sm:justify-center h-[calc(100vh-10rem)] w-full gap-4 sm:gap-8'>
-              <div className='text-3xl md:text-7xl font-bold dark:text-white text-center'>
+              <div className='bg-opacity-50 bg-gradient-to-b from-neutral-500 to-neutral-900 bg-clip-text text-center text-4xl font-bold text-transparent md:text-7xl'>
                 Code Review AI Agent
               </div>
               <div className='font-extralight text-base text-center md:text-2xl dark:text-neutral-200 py-4'>

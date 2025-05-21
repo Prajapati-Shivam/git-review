@@ -1,6 +1,7 @@
 import { MarkdownRenderer } from './markdown-renderer';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
+import { BotMessageSquare } from 'lucide-react';
 
 export function CodeReview({ review }: { review: string }) {
   return (
@@ -13,8 +14,13 @@ export function CodeReview({ review }: { review: string }) {
           {review ? (
             <MarkdownRenderer content={review} />
           ) : (
-            <div className='h-full flex items-center justify-center text-muted-foreground'>
+            <div className='h-full flex flex-col gap-8 md:gap-20 items-center justify-center text-muted-foreground'>
               <p>Click &quot;Review File&quot; to analyze this file</p>
+              <BotMessageSquare
+                className='animate-bounce text-muted-foreground'
+                size={80}
+                color='currentColor'
+              />
             </div>
           )}
         </ScrollArea>

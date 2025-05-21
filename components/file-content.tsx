@@ -12,6 +12,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { ReviewButton } from './review-button';
 import { Progress } from '@/components/ui/progress';
 import { useEffect, useState } from 'react';
+import { FileCode2 } from 'lucide-react';
 
 interface FileContentProps {
   selectedFile: string;
@@ -176,8 +177,13 @@ export function FileContent({
                 </div>
               </div>
             ) : (
-              <div className='h-full flex items-center justify-center text-muted-foreground'>
+              <div className='h-full flex flex-col gap-8 md:gap-20 items-center justify-center text-muted-foreground'>
                 <p>Select a file from the list to view its content</p>
+                <FileCode2
+                  className='animate-bounce text-muted-foreground'
+                  size={80}
+                  color='currentColor'
+                />
               </div>
             )}
             <ScrollBar orientation='horizontal' />

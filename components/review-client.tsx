@@ -25,6 +25,7 @@ interface GithubFile {
   url: string;
   html_url: string;
   git_url: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
@@ -85,7 +86,7 @@ export const ReviewClient: React.FC<ReviewClientProps> = ({
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-4 pb-8'>
         <Card className='border-2 hover:border-neutral-400 h-max'>
           <CardHeader>
-            <CardTitle className='text-xl'>ᛋ Project Files</CardTitle>
+            <CardTitle className='text-xl'>🗃️ Project Files</CardTitle>
             <CardDescription>
               Click a file to review or expand folders.
             </CardDescription>

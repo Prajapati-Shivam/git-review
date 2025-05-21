@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import getCodeReview from '@/lib/getCodeReview';
+import { toast } from 'sonner';
 
 interface ReviewButtonProps {
   selectedFile: string;
@@ -32,13 +33,18 @@ export function ReviewButton({
       onReviewComplete?.();
     } catch (error) {
       console.error('Error creating review:', error);
+      toast.error('Error generating review. Please try again later.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Button onClick={handleReview} disabled={isLoading || isDisabled}>
+    <Button
+      onClick={handleReview}
+      disabled={isLoading || isDisabled}
+      className='cursor-pointer'
+    >
       {isLoading ? (
         <>
           <Loader2 className='mr-2 h-4 w-4 animate-spin' />
