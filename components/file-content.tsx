@@ -133,10 +133,10 @@ export function FileContent({
     <>
       <Card className='border-2 hover:border-neutral-400 lg:col-span-3'>
         <CardHeader>
-          <div className='flex items-center justify-between'>
+          <div className='flex flex-col sm:flex-row gap-y-4 items-center justify-between'>
             <CardTitle className='text-xl'>🗂️ File Content</CardTitle>
             {selectedFile && (
-              <div className='flex items-center gap-4'>
+              <div className='flex flex-col sm:flex-row items-center gap-4'>
                 <div>
                   <Progress value={(reviewLen / MAX_REVIEWS_PER_DAY) * 100} />
                   <p className='mt-1 text-gray-600 text-sm'>

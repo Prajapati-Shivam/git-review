@@ -1,6 +1,6 @@
 import { MarkdownRenderer } from './markdown-renderer';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { ScrollArea } from './ui/scroll-area';
+import { ScrollArea, ScrollBar } from './ui/scroll-area';
 import { BotMessageSquare } from 'lucide-react';
 
 export function CodeReview({ review }: { review: string }) {
@@ -23,6 +23,7 @@ export function CodeReview({ review }: { review: string }) {
               />
             </div>
           )}
+          <ScrollBar orientation='horizontal' />
         </ScrollArea>
       </CardContent>
     </Card>
